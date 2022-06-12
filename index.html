@@ -12,32 +12,17 @@
 	</head>
 	<body onload="getMusic()">
 		<div class="container">
-			<div class="player" id="player">
-				<div class="player__comments-container">
+			<div class="player">
+				<div class="player__comments-container" id="commentsContainer">
 					<div class="player__comments-windows">
 						<div class="player__comments-header">
-							<span class="player__comments-title">Guaya Guaya</span>
-							<button class="player__btn">
+							<span class="player__comments-title"></span>
+							<button class="player__btn" onclick="hideComments()">
 								<span class="icon icon--exit"></span>
 							</button>
 						</div>
-						<div class="player__comments">
-							<div class="player__comment"><span>Nombre</span><span>Comentario...</span></div>
-							<div class="player__comment"><span>Nombre</span><span>Comentario...</span></div>
-							<div class="player__comment"><span>Nombre</span><span>Comentario...</span></div>
-							<div class="player__comment"><span>Nombre</span><span>Comentario...</span></div>
-							<div class="player__comment"><span>Nombre</span><span>Comentario...</span></div>
-							<div class="player__comment"><span>Nombre</span><span>Comentario...</span></div>
-							<div class="player__comment"><span>Nombre</span><span>Comentario...</span></div>
-							<div class="player__comment"><span>Nombre</span><span>Comentario...</span></div>
-							<div class="player__comment"><span>Nombre</span><span>Comentario...</span></div>
-							<div class="player__comment"><span>Nombre</span><span>Comentario...</span></div>
-						</div>
-						<div class="player__comments-form">
-							<input type="text" id="inputName" placeholder="Nombre" />
-							<textarea id="inputComment" cols="30" rows="10" placeholder="Comentario"></textarea>
-							<button class="">Comentar</button>
-						</div>
+						<div class="player__comments"></div>
+						<div class="player__comments-form"></div>
 					</div>
 				</div>
 				<div class="player__list" id="musicList"></div>

@@ -29,8 +29,8 @@ const convertSecondsToTime = (seconds) => {
 
 // ---------- ---------- VARIABLES DEL REPRODUCTOR ---------- ----------
 // Elementos del Reproductor
-const player = document.querySelector('#player');
 const musicList = document.querySelector('#musicList');
+const commentsContainer = document.querySelector('#commentsContainer');
 const progressBar = document.querySelector('#progressBar');
 const currentTime = document.querySelector('#currentTime');
 const totalCurrent = document.querySelector('#totalTime');
@@ -41,10 +41,6 @@ const volumeBar = document.querySelector('#volumeBar');
 const playButtonIcon = document.querySelector('#playButton span');
 const volumeButtonIcon = document.querySelector('#volumeButton span');
 const repeatButtonIcon = document.querySelector('#repeatButton span');
-
-// Campos de Entrada
-const inputName = document.querySelector('#inputName');
-const inputComment = document.querySelector('#inputComment');
 
 // Variables de control y utilidad
 let idInterval;
@@ -59,7 +55,7 @@ const getMusic = () => {
             <span>${arrayMusic[key].name}</span>
 			<div>
 				<button class="player__btn" onclick="giveLike(${key})" id="btn_like${key}"><span class="icon icon--white-like"></span></button>
-				<button class="player__btn" onclick="giveLike(${key})" id="btn_comments${key}"><span class="icon icon--comments"></span></button>
+				<button class="player__btn" onclick="showComments(${key})"><span class="icon icon--comments"></span></button>
 				<button class="player__btn" onclick="playMusic(${key})"><span class="icon icon--play"></span></button>
 			</div>
 		`;
@@ -69,17 +65,62 @@ const getMusic = () => {
 };
 
 // Función para mostrar la ventana de comentarios
-const showComments = (key) => {};
+const showComments = (key) => {
+	commentsContainer.classList.add('player__comments-container--active');
+	document.querySelector("#commentsContainer .player__comments-title").innerHTML = arrayMusic[key].name;
+
+	document.querySelector("#commentsContainer .player__comments-form").innerHTML = `
+		<input type="text" id="inputName" placeholder="Nombre" />
+		<textarea id="inputComment" placeholder="Comentario"></textarea>
+		<button onclick="commentMusic(${key})">Commentar</button>
+	`;
+
+	const comments = document.querySelector("#commentsContainer .player__comments");
+	comments.innerHTML = "";
+	for(const comment of arrayMusic[key].comments) {
+		let newComment = document.createElement("div");
+		newComment.classList.add("player__comment");
+		
+		newComment.innerHTML = `
+			<span>${comment.name}</span>
+			<span>${comment.comment}</span>
+		`
+		
+		comments.appendChild(newComment);
+	}
+	
+};
+// Función para ocultar la ventana de los comentarios
+const hideComments = ()=>{
+	commentsContainer.classList.remove("player__comments-container--active");
+}
 
 // Función para cometar una canción
 const commentMusic = (key) => {
+	const inputName = document.querySelector("#inputName");
+	const inputComment = document.querySelector("#inputComment");
+	
 	let name = inputName.value.trim();
 	let comment = inputComment.value.trim();
 
 	if (name !== '' && comment !== '') {
-		arrayMusic[key].comments.push([name, comment]);
+		arrayMusic[key].comments.push({name: name, comment: comment});
 		inputName.value = '';
-		inputComment = '';
+		inputComment.value = '';
+	}
+
+	const comments = document.querySelector("#commentsContainer .player__comments");
+	comments.innerHTML = "";
+	for(const comment of arrayMusic[key].comments) {
+		let newComment = document.createElement("div");
+		newComment.classList.add("player__comment");
+		
+		newComment.innerHTML = `
+			<span>${comment.name}</span>
+			<span>${comment.comment}</span>
+		`
+		
+		comments.appendChild(newComment);
 	}
 };
 
