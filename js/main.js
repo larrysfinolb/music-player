@@ -1,13 +1,13 @@
 const arrayMusic = [
 	{
 		name: 'Guaya Guaya',
-		path: 'http://127.0.0.1:5500/assets/music/guaya-guaya.mp3',
+		path: './assets/music/guaya-guaya.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'La Tóxica',
-		path: 'http://127.0.0.1:5500/assets/music/la-toxica.mp3',
+		path: './assets/music/la-toxica.mp3',
 		like: false,
 		comments: [],
 	},
@@ -29,6 +29,7 @@ const convertSecondsToTime = (seconds) => {
 
 // ---------- ---------- VARIABLES DEL REPRODUCTOR ---------- ----------
 // Elementos del Reproductor
+const player = document.querySelector('#player');
 const musicList = document.querySelector('#musicList');
 const progressBar = document.querySelector('#progressBar');
 const currentTime = document.querySelector('#currentTime');
@@ -40,6 +41,10 @@ const volumeBar = document.querySelector('#volumeBar');
 const playButtonIcon = document.querySelector('#playButton span');
 const volumeButtonIcon = document.querySelector('#volumeButton span');
 const repeatButtonIcon = document.querySelector('#repeatButton span');
+
+// Campos de Entrada
+const inputName = document.querySelector('#inputName');
+const inputComment = document.querySelector('#inputComment');
 
 // Variables de control y utilidad
 let idInterval;
@@ -60,6 +65,21 @@ const getMusic = () => {
 		`;
 
 		musicList.appendChild(item);
+	}
+};
+
+// Función para mostrar la ventana de comentarios
+const showComments = (key) => {};
+
+// Función para cometar una canción
+const commentMusic = (key) => {
+	let name = inputName.value.trim();
+	let comment = inputComment.value.trim();
+
+	if (name !== '' && comment !== '') {
+		arrayMusic[key].comments.push([name, comment]);
+		inputName.value = '';
+		inputComment = '';
 	}
 };
 

@@ -11,7 +11,8 @@ body {
 	color: #e4e5e6;
 }
 button,
-input {
+input,
+textarea {
 	border: none;
 	outline: none;
 	cursor: pointer;
@@ -75,12 +76,96 @@ input[type='range']::-webkit-slider-thumb {
 
 /* ---------- ---------- PLAYER ---------- ---------- */
 .player {
-	width: 95%;
+	position: relative;
+	width: 97.5%;
 	max-width: 320px;
-	height: 95%;
+	height: 97.5%;
+	max-height: 850px;
 	padding: 20px;
 	border-radius: 50px;
-	background-color: #25282f;
+	overflow: hidden;
+	/* NEUMORPHISM */
+	background: linear-gradient(145deg, #282b32, #21242a);
+	box-shadow: 16px 16px 32px #1f2228;
+}
+
+.player__comments-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.75);
+	z-index: 1;
+}
+.player__comments-windows {
+	width: 90%;
+	height: 75%;
+	padding: 1.25rem;
+	border-radius: 25px;
+	display: grid;
+	grid-template-rows: auto minmax(1fr, 150px) auto;
+	gap: 1rem;
+	/* NEUMORPHISM */
+	background: linear-gradient(145deg, #21242a, #282b32);
+	box-shadow: 5px 5px 20px #1f2228, -5px -5px 20px #2b2e36;
+}
+.player__comments-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.player__comments-title {
+	font-size: 1.75rem;
+}
+.player__comments {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	overflow-y: scroll;
+}
+.player__comment {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+.player__comment span:nth-child(1) {
+	font-size: 1.25rem;
+	font-weight: bold;
+}
+.player__comment span:nth-child(2) {
+	color: #a8a8a8;
+}
+.player__comments-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+.player__comments-form input,
+.player__comments-form textarea {
+	color: #e4e5e6;
+	cursor: text;
+	padding: 1.25rem;
+	border-radius: 5px;
+	/* NEUMORPHISM */
+	background: linear-gradient(145deg, #21242a, #282b32);
+	box-shadow: 26px 26px 53px #1f2228, -26px -26px 53px #2b2e36;
+}
+.player__comments-form textarea {
+	resize: none;
+	height: 100px;
+}
+.player__comments-form button {
+	padding: 1.25rem;
+	font-weight: bold;
+	color: #e4e5e6;
+	border-radius: 5px;
+	/* NEUMORPHISM */
+	background: #1f2325;
+	box-shadow: inset 3px 3px 6px #1f2228, inset -3px -3px 6px #2b2e36;
 }
 
 .player__list {
@@ -142,8 +227,8 @@ input[type='range']::-webkit-slider-thumb {
 	justify-content: center;
 	border-radius: 50%;
 	/* NEUMORPHISM */
-	background: linear-gradient(145deg, #1f2325, #1a1e20);
-	box-shadow: 3px 3px 6px #191c1e, -3px -3px 6px #212628;
+	background: #1f2325;
+	box-shadow: inset 3px 3px 6px #1f2228, inset -3px -3px 6px #2b2e36;
 }
 .player__btn--big {
 	width: 6rem;
