@@ -1,6 +1,18 @@
 const arrayMusic = [
 	{
-		name: 'Bombón',
+		name: '6 am',
+		path: './assets/music/6-am.mp3',
+		like: false,
+		comments: [],
+	},
+	{
+		name: '512',
+		path: './assets/music/512.mp3',
+		like: false,
+		comments: [],
+	},
+	{
+		name: 'Bombon',
 		path: './assets/music/bombon.mp3',
 		like: false,
 		comments: [],
@@ -12,13 +24,19 @@ const arrayMusic = [
 		comments: [],
 	},
 	{
+		name: 'Envolver',
+		path: './assets/music/envolver.mp3',
+		like: false,
+		comments: [],
+	},
+	{
 		name: 'Guaya Guaya',
 		path: './assets/music/guaya-guaya.mp3',
 		like: false,
 		comments: [],
 	},
 	{
-		name: 'La Tóxica',
+		name: 'La Toxica',
 		path: './assets/music/la-toxica.mp3',
 		like: false,
 		comments: [],
@@ -26,6 +44,30 @@ const arrayMusic = [
 	{
 		name: 'Sola Remix',
 		path: './assets/music/sola-remix.mp3',
+		like: false,
+		comments: [],
+	},
+	{
+		name: 'Suave Remix',
+		path: './assets/music/suave-remix.mp3',
+		like: false,
+		comments: [],
+	},
+	{
+		name: 'Suebete',
+		path: './assets/music/subete.mp3',
+		like: false,
+		comments: [],
+	},
+	{
+		name: 'Titi me Pregunto',
+		path: './assets/music/titi-me-pregunto.mp3',
+		like: false,
+		comments: [],
+	},
+	{
+		name: 'X Ultima Vez',
+		path: './assets/music/x-ultima-vez.mp3',
 		like: false,
 		comments: [],
 	},
@@ -54,6 +96,7 @@ const currentTime = document.querySelector('#currentTime');
 const totalCurrent = document.querySelector('#totalTime');
 const audio = document.querySelector('#audio');
 const volumeBar = document.querySelector('#volumeBar');
+const playButton = document.querySelector('#playButton');
 
 // Iconos de Botones
 const playButtonIcon = document.querySelector('#playButton span');
@@ -62,6 +105,7 @@ const repeatButtonIcon = document.querySelector('#repeatButton span');
 
 // Variables de control y utilidad
 let idInterval;
+let currentKey;
 
 // ---------- ---------- FUNCIONES DEL REPRODUCTOR ---------- ----------
 // Funcion para obtener la lista de musicas
@@ -69,13 +113,14 @@ const getMusic = () => {
 	for (const key in arrayMusic) {
 		let item = document.createElement('div');
 		item.classList.add('player__item');
+		item.id = `item${key}`;
 
 		item.innerHTML = `
             <span>${arrayMusic[key].name}</span>
 			<div>
-				<button class="player__btn" onclick="giveLike(${key})" id="btn_like${key}"><span class="icon icon--white-like"></span></button>
-				<button class="player__btn" onclick="showComments(${key})"><span class="icon icon--comments"></span></button>
-				<button class="player__btn" onclick="playMusic(${key})"><span class="icon icon--play"></span></button>
+				<button class="player__btn player__btn--medium" onclick="giveLike(${key})" id="btn_like${key}"><span class="icon icon--white-like"></span></button>
+				<button class="player__btn player__btn--medium" onclick="showComments(${key})"><span class="icon icon--comments"></span></button>
+				<button class="player__btn player__btn--medium" onclick="playMusic(${key})"><span class="icon icon--play"></span></button>
 			</div>
 		`;
 
@@ -86,12 +131,14 @@ const getMusic = () => {
 // Función para mostrar la ventana de comentarios
 const showComments = (key) => {
 	commentsContainer.classList.add('player__comments-container--active');
-	document.querySelector('#commentsContainer .player__comments-title').innerHTML = arrayMusic[key].name;
+	document.querySelector(
+		'#commentsContainer .player__comments-title'
+	).innerHTML = `Comentarios de ${arrayMusic[key].name}`;
 
 	document.querySelector('#commentsContainer .player__comments-form').innerHTML = `
 		<input type="text" id="inputName" class="player__input" placeholder="Nombre" />
 		<textarea id="inputComment" class="player__input" placeholder="Comentario"></textarea>
-		<button onclick="commentMusic(${key})">Commentar</button>
+		<button class="player__btn player__btn--form" onclick="commentMusic(${key})">Comentar</button>
 	`;
 
 	const comments = document.querySelector('#commentsContainer .player__comments');
@@ -150,6 +197,12 @@ const playMusic = (key) => {
 		clearInterval(idInterval);
 		idInterval = setInterval(updateTimeAndProgressBar, 250);
 	});
+
+	if (currentKey !== undefined) document.querySelector(`#item${currentKey}`).classList.remove('player__item--active');
+	currentKey = key;
+	document.querySelector(`#item${key}`).classList.add('player__item--active');
+
+	playButton.classList.add('player__btn--active');
 	playButtonIcon.classList.replace('icon--play', 'icon--pause');
 };
 
@@ -191,10 +244,12 @@ const playOrPause = () => {
 				clearInterval(idInterval);
 				idInterval = setInterval(updateTimeAndProgressBar, 250);
 			});
+			playButton.classList.add('player__btn--active');
 			playButtonIcon.classList.replace('icon--play', 'icon--pause');
 		} else {
 			audio.pause();
 			clearInterval(idInterval);
+			playButton.classList.remove('player__btn--active');
 			playButtonIcon.classList.replace('icon--pause', 'icon--play');
 		}
 	}
@@ -227,15 +282,21 @@ const controlVolume = () => {
 const changeMusic = (change, isButton) => {
 	if (!audio.loop || isButton) {
 		for (let i = 0; i < arrayMusic.length; i++) {
-			// audio.src === `http://${document.domain}:5500/${arrayMusic[i].path.slice(5)}`
-			// audio.src === arrayMusic[i].path
-			if (audio.src === `http://${document.domain}:5500/${arrayMusic[i].path.slice(5)}`) {
+			// arrayMusic[i].path
+			if (audio.src === `http://${document.domain}:5500/${audio.src.splice(5)}`) {
+				document.querySelector(`#item${currentKey}`).classList.remove('player__item--active');
 				if (i + change === arrayMusic.length) {
 					audio.src = arrayMusic[0].path;
+					currentKey = 0;
+					document.querySelector(`#item${currentKey}`).classList.add('player__item--active');
 				} else if (i + change === -1) {
 					audio.src = arrayMusic[arrayMusic.length - 1].path;
+					currentKey = arrayMusic.length - 1;
+					document.querySelector(`#item${currentKey}`).classList.add('player__item--active');
 				} else {
 					audio.src = arrayMusic[i + change].path;
+					currentKey = i + change;
+					document.querySelector(`#item${currentKey}`).classList.add('player__item--active');
 				}
 				playOrPause();
 				break;
