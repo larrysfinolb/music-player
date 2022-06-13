@@ -1,73 +1,74 @@
+// Arreglo de Musicas
 const arrayMusic = [
 	{
 		name: '6 am',
-		path: './assets/music/6-am.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/6-am.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: '512',
-		path: './assets/music/512.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/512.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'Bombon',
-		path: './assets/music/bombon.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/bombon.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'Ella fuma',
-		path: './assets/music/ella-fuma.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/ella-fuma.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'Envolver',
-		path: './assets/music/envolver.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/envolver.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'Guaya Guaya',
-		path: './assets/music/guaya-guaya.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/guaya-guaya.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'La Toxica',
-		path: './assets/music/la-toxica.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/la-toxica.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'Sola Remix',
-		path: './assets/music/sola-remix.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/sola-remix.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'Suave Remix',
-		path: './assets/music/suave-remix.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/suave-remix.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'Suebete',
-		path: './assets/music/subete.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/subete.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'Titi me Pregunto',
-		path: './assets/music/titi-me-pregunto.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/titi-me-pregunto.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'X Ultima Vez',
-		path: './assets/music/x-ultima-vez.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/x-ultima-vez.mp3',
 		like: false,
 		comments: [],
 	},
@@ -192,11 +193,16 @@ const commentMusic = (key) => {
 // Función para seleccionar y reproducir una canción
 const playMusic = (key) => {
 	audio.src = arrayMusic[key].path;
-	audio.play().then(() => {
-		totalTime.innerHTML = convertSecondsToTime(audio.duration);
-		clearInterval(idInterval);
-		idInterval = setInterval(updateTimeAndProgressBar, 250);
-	});
+	audio
+		.play()
+		.then(() => {
+			totalTime.innerHTML = convertSecondsToTime(audio.duration);
+			clearInterval(idInterval);
+			idInterval = setInterval(updateTimeAndProgressBar, 250);
+		})
+		.catch((error) => {
+			console.log(error);
+		});
 
 	if (currentKey !== undefined) document.querySelector(`#item${currentKey}`).classList.remove('player__item--active');
 	currentKey = key;
@@ -209,14 +215,14 @@ const playMusic = (key) => {
 // Función para dar like
 const giveLike = (key) => {
 	arrayMusic[key].like = !arrayMusic[key].like;
-	// document.querySelector(`#btn_like${key} span`).classList.toggle('icon--white-like');
 	document.querySelector(`#btn_like${key} span`).classList.toggle('icon--red-like');
 };
 
 // Función para actualizar el tiempo y la barra de reproducción
 const updateTimeAndProgressBar = () => {
 	currentTime.innerHTML = convertSecondsToTime(audio.currentTime);
-	progressBar.value = (audio.currentTime * 100) / audio.duration;
+	let value = (audio.currentTime * 100) / audio.duration;
+	progressBar.value = value >= 0 ? value : 0;
 };
 
 // Función para mover la barra de progreso
@@ -230,9 +236,14 @@ const moveProgressBar = () => {
 const reanudeProgress = () => {
 	if (audio.src !== '') {
 		audio.currentTime = (audio.duration * progressBar.value) / 100;
-		audio.play().then(() => {
-			idInterval = setInterval(updateTimeAndProgressBar, 250);
-		});
+		audio
+			.play()
+			.then(() => {
+				idInterval = setInterval(updateTimeAndProgressBar, 250);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	}
 };
 
@@ -240,10 +251,15 @@ const reanudeProgress = () => {
 const playOrPause = () => {
 	if (audio.src !== '') {
 		if (audio.paused || audio.ended) {
-			audio.play().then(() => {
-				clearInterval(idInterval);
-				idInterval = setInterval(updateTimeAndProgressBar, 250);
-			});
+			audio
+				.play()
+				.then(() => {
+					clearInterval(idInterval);
+					idInterval = setInterval(updateTimeAndProgressBar, 250);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 			playButton.classList.add('player__btn--active');
 			playButtonIcon.classList.replace('icon--play', 'icon--pause');
 		} else {
@@ -282,8 +298,7 @@ const controlVolume = () => {
 const changeMusic = (change, isButton) => {
 	if (!audio.loop || isButton) {
 		for (let i = 0; i < arrayMusic.length; i++) {
-			// arrayMusic[i].path
-			if (audio.src === `http://${document.domain}:5500/${audio.src.splice(5)}`) {
+			if (audio.src === arrayMusic[i].path) {
 				document.querySelector(`#item${currentKey}`).classList.remove('player__item--active');
 				if (i + change === arrayMusic.length) {
 					audio.src = arrayMusic[0].path;
