@@ -26,43 +26,51 @@
 					</div>
 				</div>
 				<div class="player__list" id="musicList"></div>
-				<audio id="audio"></audio>
-				<div class="player__bar-container">
-					<div class="player__time-container"><span id="currentTime">00:00</span><span id="totalTime">00:00</span></div>
-					<input
-						type="range"
-						min="0"
-						max="100"
-						step="0.25"
-						value="0"
-						class="player__bar"
-						id="progressBar"
-						onmousedown="moveProgressBar()"
-						onmouseup="reanudeProgress()"
-					/>
-				</div>
-				<div class="player__controls">
-					<button class="player__btn" id="repeatButton" onclick="repeatOrNoRepeat()">
-						<span class="icon icon--no-repeat"></span>
-					</button>
-					<button class="player__btn" onclick=""><span class="icon icon--previous"></span></button>
-					<button class="player__btn player__btn--big" id="playButton" onclick="playOrPause()">
-						<span class="icon icon--play"></span>
-					</button>
-					<button class="player__btn" onclick=""><span class="icon icon--next"></span></button>
-					<button class="player__btn player__btn--volume" id="volumeButton" onclick="showVolume()">
-						<span class="icon icon--volume"></span>
+				<div class="player__controls-and-bar-container">
+					<div class="player__bar-container">
+						<audio id="audio" onended="changeMusic(1, false)"></audio>
+						<div class="player__time-container">
+							<span id="currentTime">00:00</span><span id="totalTime">00:00</span>
+						</div>
 						<input
 							type="range"
 							min="0"
 							max="100"
-							value="100"
-							step="1"
+							step="0.25"
+							value="0"
 							class="player__bar"
-							id="volumeBar"
-							onchange="controlVolume()"
+							id="progressBar"
+							ontouchstart="moveProgressBar()"
+							onmousedown="moveProgressBar()"
+							ontouchend="reanudeProgress()"
+							onmouseup="reanudeProgress()"
 						/>
-					</button>
+					</div>
+					<div class="player__controls">
+						<button class="player__btn" id="repeatButton" onclick="repeatOrNoRepeat()">
+							<span class="icon icon--no-repeat"></span>
+						</button>
+						<button class="player__btn" onclick="changeMusic(-1, true)">
+							<span class="icon icon--previous"></span>
+						</button>
+						<button class="player__btn player__btn--big" id="playButton" onclick="playOrPause()">
+							<span class="icon icon--play"></span>
+						</button>
+						<button class="player__btn" onclick="changeMusic(1, true)"><span class="icon icon--next"></span></button>
+						<button class="player__btn player__btn--volume" id="volumeButton" onclick="showVolume()">
+							<span class="icon icon--volume"></span>
+							<input
+								type="range"
+								min="0"
+								max="100"
+								value="100"
+								step="1"
+								class="player__bar"
+								id="volumeBar"
+								onchange="controlVolume()"
+							/>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

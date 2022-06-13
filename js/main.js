@@ -1,13 +1,25 @@
 const arrayMusic = [
 	{
+		name: 'Bombón',
+		path: 'http://127.0.0.1:5500/assets/music/bombon.mp3',
+		like: false,
+		comments: [],
+	},
+	{
+		name: 'Ella fuma',
+		path: 'http://127.0.0.1:5500/assets/music/ella-fuma.mp3',
+		like: false,
+		comments: [],
+	},
+	{
 		name: 'Guaya Guaya',
-		path: './assets/music/guaya-guaya.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/guaya-guaya.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'La Tóxica',
-		path: './assets/music/la-toxica.mp3',
+		path: 'http://127.0.0.1:5500/assets/music/la-toxica.mp3',
 		like: false,
 		comments: [],
 	},
@@ -67,59 +79,58 @@ const getMusic = () => {
 // Función para mostrar la ventana de comentarios
 const showComments = (key) => {
 	commentsContainer.classList.add('player__comments-container--active');
-	document.querySelector("#commentsContainer .player__comments-title").innerHTML = arrayMusic[key].name;
+	document.querySelector('#commentsContainer .player__comments-title').innerHTML = arrayMusic[key].name;
 
-	document.querySelector("#commentsContainer .player__comments-form").innerHTML = `
-		<input type="text" id="inputName" placeholder="Nombre" />
-		<textarea id="inputComment" placeholder="Comentario"></textarea>
+	document.querySelector('#commentsContainer .player__comments-form').innerHTML = `
+		<input type="text" id="inputName" class="player__input" placeholder="Nombre" />
+		<textarea id="inputComment" class="player__input" placeholder="Comentario"></textarea>
 		<button onclick="commentMusic(${key})">Commentar</button>
 	`;
 
-	const comments = document.querySelector("#commentsContainer .player__comments");
-	comments.innerHTML = "";
-	for(const comment of arrayMusic[key].comments) {
-		let newComment = document.createElement("div");
-		newComment.classList.add("player__comment");
-		
+	const comments = document.querySelector('#commentsContainer .player__comments');
+	comments.innerHTML = '';
+	for (const comment of arrayMusic[key].comments) {
+		let newComment = document.createElement('div');
+		newComment.classList.add('player__comment');
+
 		newComment.innerHTML = `
 			<span>${comment.name}</span>
 			<span>${comment.comment}</span>
-		`
-		
+		`;
+
 		comments.appendChild(newComment);
 	}
-	
 };
 // Función para ocultar la ventana de los comentarios
-const hideComments = ()=>{
-	commentsContainer.classList.remove("player__comments-container--active");
-}
+const hideComments = () => {
+	commentsContainer.classList.remove('player__comments-container--active');
+};
 
 // Función para cometar una canción
 const commentMusic = (key) => {
-	const inputName = document.querySelector("#inputName");
-	const inputComment = document.querySelector("#inputComment");
-	
+	const inputName = document.querySelector('#inputName');
+	const inputComment = document.querySelector('#inputComment');
+
 	let name = inputName.value.trim();
 	let comment = inputComment.value.trim();
 
 	if (name !== '' && comment !== '') {
-		arrayMusic[key].comments.push({name: name, comment: comment});
+		arrayMusic[key].comments.push({ name: name, comment: comment });
 		inputName.value = '';
 		inputComment.value = '';
 	}
 
-	const comments = document.querySelector("#commentsContainer .player__comments");
-	comments.innerHTML = "";
-	for(const comment of arrayMusic[key].comments) {
-		let newComment = document.createElement("div");
-		newComment.classList.add("player__comment");
-		
+	const comments = document.querySelector('#commentsContainer .player__comments');
+	comments.innerHTML = '';
+	for (const comment of arrayMusic[key].comments) {
+		let newComment = document.createElement('div');
+		newComment.classList.add('player__comment');
+
 		newComment.innerHTML = `
 			<span>${comment.name}</span>
 			<span>${comment.comment}</span>
-		`
-		
+		`;
+
 		comments.appendChild(newComment);
 	}
 };
@@ -199,4 +210,23 @@ const controlVolume = () => {
 	audio.volume = volumeBar.value / 100;
 	if (audio.volume > 0) volumeButtonIcon.classList.replace('icon--mute-volume', 'icon--volume');
 	else volumeButtonIcon.classList.replace('icon--volume', 'icon--mute-volume');
+};
+
+// Función para cambiar de musica
+const changeMusic = (change, isButton) => {
+	if (!audio.loop || isButton) {
+		for (let i = 0; i < arrayMusic.length; i++) {
+			if (audio.src === arrayMusic[i].path) {
+				if (i + change === arrayMusic.length) {
+					audio.src = arrayMusic[0].path;
+				} else if (i + change === -1) {
+					audio.src = arrayMusic[arrayMusic.length - 1].path;
+				} else {
+					audio.src = arrayMusic[i + change].path;
+				}
+				playOrPause();
+				break;
+			}
+		}
+	}
 };

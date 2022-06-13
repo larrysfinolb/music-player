@@ -73,16 +73,22 @@ input[type='range']::-webkit-slider-thumb {
 .icon--no-repeat {
 	background-image: url('./../assets/icons/no-repeat-icon.svg');
 }
+.icon--exit {
+	background-image: url('./../assets/icons/exit-icon.svg');
+}
 
 /* ---------- ---------- PLAYER ---------- ---------- */
 .player {
 	position: relative;
 	width: 97.5%;
-	max-width: 320px;
+	max-width: 375px;
 	height: 97.5%;
-	max-height: 850px;
+	max-height: 800px;
 	padding: 20px;
 	border-radius: 50px;
+	display: grid;
+	grid-template-rows: 1fr auto;
+	gap: 1.5rem;
 	overflow: hidden;
 	/* NEUMORPHISM */
 	background: linear-gradient(145deg, #282b32, #21242a);
@@ -110,7 +116,7 @@ input[type='range']::-webkit-slider-thumb {
 	padding: 1.25rem;
 	border-radius: 25px;
 	display: grid;
-	grid-template-rows: auto minmax(1fr, 150px) auto;
+	grid-template-rows: auto 1fr auto;
 	gap: 1rem;
 	/* NEUMORPHISM */
 	background: linear-gradient(145deg, #21242a, #282b32);
@@ -147,16 +153,6 @@ input[type='range']::-webkit-slider-thumb {
 	flex-direction: column;
 	gap: 1rem;
 }
-.player__comments-form input,
-.player__comments-form textarea {
-	color: #e4e5e6;
-	cursor: text;
-	padding: 1.25rem;
-	border-radius: 5px;
-	/* NEUMORPHISM */
-	background: linear-gradient(145deg, #21242a, #282b32);
-	box-shadow: 26px 26px 53px #1f2228, -26px -26px 53px #2b2e36;
-}
 .player__comments-form textarea {
 	resize: none;
 	height: 100px;
@@ -171,10 +167,22 @@ input[type='range']::-webkit-slider-thumb {
 	box-shadow: inset 3px 3px 6px #1f2228, inset -3px -3px 6px #2b2e36;
 }
 
+.player__input {
+	width: 100%;
+	color: #e4e5e6;
+	cursor: text;
+	padding: 1.25rem;
+	border-radius: 5px;
+	/* NEUMORPHISM */
+	background: linear-gradient(145deg, #21242a, #282b32);
+	box-shadow: 26px 26px 53px #1f2228, -26px -26px 53px #2b2e36;
+}
+
 .player__list {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
+	overflow-y: scroll;
 }
 .player__item {
 	display: flex;
@@ -187,6 +195,12 @@ input[type='range']::-webkit-slider-thumb {
 }
 .player__item span {
 	font-size: 1.5rem;
+}
+
+.player__controls-and-bar-container {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 
 .player__bar-container {
