@@ -1,25 +1,31 @@
 const arrayMusic = [
 	{
 		name: 'Bombón',
-		path: 'http://127.0.0.1:5500/assets/music/bombon.mp3',
+		path: './../assets/music/bombon.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'Ella fuma',
-		path: 'http://127.0.0.1:5500/assets/music/ella-fuma.mp3',
+		path: './../assets/music/ella-fuma.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'Guaya Guaya',
-		path: 'http://127.0.0.1:5500/assets/music/guaya-guaya.mp3',
+		path: './../assets/music/guaya-guaya.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'La Tóxica',
-		path: 'http://127.0.0.1:5500/assets/music/la-toxica.mp3',
+		path: './../assets/music/la-toxica.mp3',
+		like: false,
+		comments: [],
+	},
+	{
+		name: 'Sola Remix',
+		path: './../assets/music/sola-remix.mp3',
 		like: false,
 		comments: [],
 	},
@@ -58,6 +64,7 @@ const repeatButtonIcon = document.querySelector('#repeatButton span');
 let idInterval;
 
 // ---------- ---------- FUNCIONES DEL REPRODUCTOR ---------- ----------
+// Funcion para obtener la lista de musicas
 const getMusic = () => {
 	for (const key in arrayMusic) {
 		let item = document.createElement('div');
@@ -161,15 +168,19 @@ const updateTimeAndProgressBar = () => {
 
 // Función para mover la barra de progreso
 const moveProgressBar = () => {
-	audio.pause();
-	clearInterval(idInterval);
+	if (audio.src !== '') {
+		audio.pause();
+		clearInterval(idInterval);
+	}
 };
 // Función para reanudar el progreso de la musica
 const reanudeProgress = () => {
-	audio.currentTime = (audio.duration * progressBar.value) / 100;
-	audio.play().then(() => {
-		idInterval = setInterval(updateTimeAndProgressBar, 250);
-	});
+	if (audio.src !== '') {
+		audio.currentTime = (audio.duration * progressBar.value) / 100;
+		audio.play().then(() => {
+			idInterval = setInterval(updateTimeAndProgressBar, 250);
+		});
+	}
 };
 
 // Función para reproducir o pausar
@@ -216,7 +227,9 @@ const controlVolume = () => {
 const changeMusic = (change, isButton) => {
 	if (!audio.loop || isButton) {
 		for (let i = 0; i < arrayMusic.length; i++) {
-			if (audio.src === arrayMusic[i].path) {
+			// audio.src === `http://${document.domain}:5500/${arrayMusic[i].path.slice(5)}`
+			// audio.src === arrayMusic[i].path
+			if (audio.src === `http://${document.domain}:5500/${arrayMusic[i].path.slice(5)}`) {
 				if (i + change === arrayMusic.length) {
 					audio.src = arrayMusic[0].path;
 				} else if (i + change === -1) {
