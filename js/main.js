@@ -1,31 +1,31 @@
 const arrayMusic = [
 	{
 		name: 'Bombón',
-		path: './../assets/music/bombon.mp3',
+		path: './assets/music/bombon.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'Ella fuma',
-		path: './../assets/music/ella-fuma.mp3',
+		path: './assets/music/ella-fuma.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'Guaya Guaya',
-		path: './../assets/music/guaya-guaya.mp3',
+		path: './assets/music/guaya-guaya.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'La Tóxica',
-		path: './../assets/music/la-toxica.mp3',
+		path: './assets/music/la-toxica.mp3',
 		like: false,
 		comments: [],
 	},
 	{
 		name: 'Sola Remix',
-		path: './../assets/music/sola-remix.mp3',
+		path: './assets/music/sola-remix.mp3',
 		like: false,
 		comments: [],
 	},
